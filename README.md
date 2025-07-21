@@ -62,8 +62,6 @@ docker-compose run --rm app npm test
 
 - **CQRS (Command Query Responsibility Segregation):**
   - All write (create, confirm, cancel) and read (get, list) operations are separated into commands and queries using the official `@nestjs/cqrs` module.
-- **Domain-Driven Design (DDD):**
-  - Core business logic (e.g., booking overlap, available dates, booking policy) is implemented as pure, technology-agnostic functions/services in the `domain/` folder.
 - **Service Layer:**
   - Application logic is encapsulated in NestJS services, which orchestrate domain logic and repositories.
 - **Dependency Inversion Principle (DIP):**
