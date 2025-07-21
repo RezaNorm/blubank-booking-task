@@ -71,8 +71,9 @@ docker-compose run --rm app npm test
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
+```mermaid
 erDiagram
     User {
         int id PK
@@ -111,9 +112,14 @@ erDiagram
     Booking ||--o{ EntityHistory : "history"
     Resource ||--o{ EntityHistory : "history"
     User ||--o{ EntityHistory : "history"
+```
 
----
+**Relationships:**
+- **User ↔ Booking**: One-to-many. Each user can have multiple bookings.
+- **Resource ↔ Booking**: One-to-many. Each resource can have multiple bookings.
+- **EntityHistory**: Polymorphic. Can reference any entity (user, resource, booking) by name and id.
 
+    
 ## 🧪 Testing
 
 - **Unit tests** for all services, controllers, and domain logic (Jest)
