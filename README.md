@@ -135,9 +135,7 @@ erDiagram
 ## 🧩 Features
 
 - **Booking CRUD**: Create, view, confirm, and cancel bookings
-- **Resource CRUD**: Create and view hotel rooms
-- **User CRUD**: Create and view users
-- **Availability**: Prevents overlapping bookings, shows available dates
+- **Availability**: Prevents overlapping bookings
 - **CQRS**: All commands and queries separated for scalability
 - **History/Audit**: All entity changes are recorded
 - **Swagger Docs**: Interactive API documentation at `/api`
