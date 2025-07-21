@@ -71,37 +71,46 @@ docker-compose run --rm app npm test
 
 ---
 
-## 🗄️ Entity Relationship Schema
+## 🗄️ Database Schema
 
-```
-User (1) ────< (N) Booking (N) >──── (1) Resource
+erDiagram
+    User {
+        int id PK
+        string name
+        string email UK
+    }
 
-Booking
-  - id
-  - user (ManyToOne User)
-  - resource (ManyToOne Resource)
-  - startTime
-  - endTime
-  - status (pending, confirmed, cancelled)
+    Resource {
+        int id PK
+        string name
+        string description
+    }
 
-Resource
-  - id
-  - name
-  - description
+    Booking {
+        int id PK
+        int user_id FK
+        int resource_id FK
+        datetime startTime
+        datetime endTime
+        string status
+        datetime createdAt
+        datetime updatedAt
+    }
 
-User
-  - id
-  - name
-  - email
+    EntityHistory {
+        int id PK
+        string entity
+        int entityId
+        string action
+        jsonb snapshot
+        datetime timestamp
+    }
 
-EntityHistory
-  - id
-  - entity (e.g., 'booking', 'resource')
-  - entityId
-  - action (created, confirmed, cancelled, etc.)
-  - snapshot (JSON)
-  - timestamp
-```
+    User ||--o{ Booking : "has bookings"
+    Resource ||--o{ Booking : "has bookings"
+    Booking ||--o{ EntityHistory : "history"
+    Resource ||--o{ EntityHistory : "history"
+    User ||--o{ EntityHistory : "history"
 
 ---
 
