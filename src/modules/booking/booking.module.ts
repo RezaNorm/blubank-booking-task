@@ -6,7 +6,7 @@ import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
 import { UserModule } from '../user/user.module';
 import { ResourceModule } from '../resource/resource.module';
-import { BookingPolicyService } from './policy/booking-policy.service';
+
 import { HistoryModule } from '../history/history.module';
 import { CreateBookingHandler } from './commands/create-booking.handler';
 import { ConfirmBookingHandler } from './commands/confirm-booking.handler';
@@ -34,8 +34,6 @@ const QueryHandlers = [
   ],
   providers: [
     BookingService,
-    BookingPolicyService,
-    { provide: 'IBookingPolicy', useClass: BookingPolicyService },
     ...CommandHandlers,
     ...QueryHandlers,
   ],
