@@ -30,7 +30,6 @@ export class ResourceRepository
   }
 
   async findAvailableResources(startTime: Date, endTime: Date): Promise<Resource[]> {
-    // Find all resources
     const allResources = await this.findAll();
     
     // Find resources that have bookings in the given time range
@@ -78,7 +77,6 @@ export class ResourceRepository
     return reservedDates;
   }
 
-  // Implement the findOne method from the base repository
   async findOne(options: FindOneOptions<Resource>): Promise<Resource | null> {
     return this.resourceRepository.findOne({
       ...options,
@@ -86,13 +84,11 @@ export class ResourceRepository
     });
   }
 
-  // Implement the update method
   async update(id: number, entity: Partial<Resource>): Promise<Resource | null> {
     await this.resourceRepository.update(id, entity);
     return this.findOne({ where: { id } });
   }
 
-  // Implement the delete method
   async delete(id: number): Promise<boolean> {
     const result = await this.resourceRepository.delete(id);
     return result.affected ? result.affected > 0 : false;

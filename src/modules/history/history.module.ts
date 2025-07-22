@@ -10,7 +10,7 @@ import { IHistoryRepository, HISTORY_REPOSITORY } from './repositories/history.r
 import { RecordHistoryHandler } from './commands/handlers/record-history.handler';
 
 // Query Handlers
-import { GetEntityHistoryHandler } from './queries/get-entity-history.handler';
+import { GetEntityHistoryHandler } from './queries/handler/get-entity-history.handler';
 
 const CommandHandlers = [RecordHistoryHandler];
 const QueryHandlers = [GetEntityHistoryHandler];

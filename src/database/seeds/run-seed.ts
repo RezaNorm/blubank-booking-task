@@ -1,18 +1,10 @@
 import { DataSource } from 'typeorm';
 import { seed } from './seed';
-import { User } from '../../modules/user/entity/user.entity';
-import { Resource } from '../../modules/resource/entity/resource.entity';
-import { Booking } from '../../modules/booking/entity/booking.entity';
+import databaseConfig from '../config/database.config';
 
 async function runSeed() {
   const datasource = new DataSource({
-    type: 'postgres',
-    host: process.env.DB_HOST || 'postgres',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_DATABASE || 'booking',
-    entities: [User, Resource, Booking],
+    ...databaseConfig,
     synchronize: true,
   });
 

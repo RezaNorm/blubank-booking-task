@@ -9,7 +9,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  // Swagger setup
   const config = new DocumentBuilder()
     .setTitle('Hotel Booking API')
     .setDescription('A hotel room booking system with CRUD operations for bookings, users, and resources.')

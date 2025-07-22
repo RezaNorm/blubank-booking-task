@@ -32,7 +32,6 @@ export class UserRepository
     });
   }
 
-  // Implement the findOne method from the base repository
   async findOne(options: FindOneOptions<User>): Promise<User | null> {
     return this.userRepository.findOne({
       ...options,
@@ -40,13 +39,11 @@ export class UserRepository
     });
   }
 
-  // Implement the update method
   async update(id: number, entity: Partial<User>): Promise<User | null> {
     await this.userRepository.update(id, entity);
     return this.findOne({ where: { id } });
   }
 
-  // Implement the delete method
   async delete(id: number): Promise<boolean> {
     const result = await this.userRepository.delete(id);
     return result.affected ? result.affected > 0 : false;

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { RecordHistoryCommand } from './commands/impl/record-history.command';
-import { GetEntityHistoryQuery } from './queries/get-entity-history.query';
+import { GetEntityHistoryQuery } from './queries/impl/get-entity-history.query';
 
 @Injectable()
 export class HistoryService {

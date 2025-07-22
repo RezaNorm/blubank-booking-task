@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EntityHistory } from '../entity/entity-history.entity';
-import { GetEntityHistoryQuery } from './get-entity-history.query';
+import { EntityHistory } from '../../entity/entity-history.entity';
+import { GetEntityHistoryQuery } from '../impl/get-entity-history.query';
 
 @QueryHandler(GetEntityHistoryQuery)
 export class GetEntityHistoryHandler implements IQueryHandler<GetEntityHistoryQuery> {

@@ -6,7 +6,6 @@ import { Booking } from '../../modules/booking/entity/booking.entity';
 export async function seed(datasource: DataSource) {
   console.log('Starting database reset...');
   
-  // Get repositories
   const userRepository = datasource.getRepository(User);
   const resourceRepository = datasource.getRepository(Resource);
   const bookingRepository = datasource.getRepository(Booking);
@@ -15,7 +14,6 @@ export async function seed(datasource: DataSource) {
   await datasource.query('SET session_replication_role = \'replica\'');
   
   try {
-    // Clear all data in reverse order of dependencies
     console.log('Clearing existing data...');
     await bookingRepository.deleteAll();
     console.log('Bookings cleared');
@@ -31,13 +29,11 @@ export async function seed(datasource: DataSource) {
     
     console.log('Database reset completed successfully');
   } catch (error) {
-    // Make sure to re-enable foreign key checks even if there's an error
     await datasource.query('SET session_replication_role = \'origin\'');
     console.error('Error resetting database:', error);
     throw error;
   }
 
-  // Create sample users
   const users = [
     {
       name: 'John Doe',
@@ -53,7 +49,6 @@ export async function seed(datasource: DataSource) {
     },
   ];
 
-  // Create sample resources (hotel rooms)
   const resources = [
     {
       name: 'Room 101',
