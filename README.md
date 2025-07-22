@@ -11,7 +11,6 @@ A hotel room booking system built with NestJS, TypeORM, PostgreSQL, and CQRS. Th
 - **NestJS** (v10) - Modular, scalable server-side framework
 - **TypeORM** - ORM for PostgreSQL
 - **PostgreSQL** - Relational database
-- **@nestjs/cqrs** - Official CQRS module for command/query separation
 - **Jest** - Unit testing
 - **Swagger** - API documentation
 - **Docker & Docker Compose** - Containerized development and deployment
