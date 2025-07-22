@@ -66,7 +66,7 @@ docker-compose run --rm app npm test
   - Uses CommandBus and QueryBus for dispatching commands and queries.
 
 - **Repository Pattern:**
-  - Abstract data access layer that mediates between the domain and data mapping layers.
+  - Abstract data access layer that mediates between the data mapping layers.
   - Each entity (User, Booking, Resource) has its own repository interface and implementation.
   - Provides a collection-like interface for accessing domain objects.
   - Centralizes data access logic and makes it easier to swap implementations.
