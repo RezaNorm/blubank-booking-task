@@ -2,7 +2,11 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { User } from '../../user/entity/user.entity';
 import { Resource } from '../../resource/entity/resource.entity';
 
-export type BookingStatus = 'pending' | 'confirmed' | 'cancelled';
+export enum BookingStatus  {
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  CANCELLED = 'cancelled'
+}
 
 @Entity()
 export class Booking {
@@ -21,7 +25,7 @@ export class Booking {
   @Column('timestamp')
   endTime: Date;
 
-  @Column({ type: 'varchar', default: 'pending' })
+  @Column({ type: 'enum', enum: BookingStatus, default: 'pending' })
   status: BookingStatus;
 
   @CreateDateColumn()

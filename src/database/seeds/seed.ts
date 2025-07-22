@@ -1,10 +1,41 @@
 import { DataSource } from 'typeorm';
 import { User } from '../../modules/user/entity/user.entity';
 import { Resource } from '../../modules/resource/entity/resource.entity';
+import { Booking } from '../../modules/booking/entity/booking.entity';
 
 export async function seed(datasource: DataSource) {
+  console.log('Starting database reset...');
+  
+  // Get repositories
   const userRepository = datasource.getRepository(User);
   const resourceRepository = datasource.getRepository(Resource);
+  const bookingRepository = datasource.getRepository(Booking);
+  
+  // Disable foreign key checks
+  await datasource.query('SET session_replication_role = \'replica\'');
+  
+  try {
+    // Clear all data in reverse order of dependencies
+    console.log('Clearing existing data...');
+    await bookingRepository.deleteAll();
+    console.log('Bookings cleared');
+    
+    await resourceRepository.deleteAll();
+    console.log('Resources cleared');
+    
+    await userRepository.deleteAll();
+    console.log('Users cleared');
+    
+    // Re-enable foreign key checks
+    await datasource.query('SET session_replication_role = \'origin\'');
+    
+    console.log('Database reset completed successfully');
+  } catch (error) {
+    // Make sure to re-enable foreign key checks even if there's an error
+    await datasource.query('SET session_replication_role = \'origin\'');
+    console.error('Error resetting database:', error);
+    throw error;
+  }
 
   // Create sample users
   const users = [
@@ -46,27 +77,29 @@ export async function seed(datasource: DataSource) {
     },
   ];
 
+  console.log('Starting to seed data...');
+  
   // Insert users
+  const createdUsers: User[] = [];
   for (const userData of users) {
-    const existingUser = await userRepository.findOne({
-      where: { email: userData.email },
-    });
-    if (!existingUser) {
-      await userRepository.save(userData);
-      console.log(`Created user: ${userData.name}`);
-    }
+    const user = userRepository.create(userData);
+    const savedUser = await userRepository.save(user);
+    createdUsers.push(savedUser);
+    console.log(`Created user: ${savedUser.email}`);
   }
 
   // Insert resources
+  const createdResources: Resource[] = [];
   for (const resourceData of resources) {
-    const existingResource = await resourceRepository.findOne({
-      where: { name: resourceData.name },
-    });
-    if (!existingResource) {
-      await resourceRepository.save(resourceData);
-      console.log(`Created resource: ${resourceData.name}`);
-    }
+    const resource = resourceRepository.create(resourceData);
+    const savedResource = await resourceRepository.save(resource);
+    createdResources.push(savedResource);
+    console.log(`Created resource: ${savedResource.name}`);
   }
 
-  console.log('Seeding completed!');
+  console.log('Seeding completed successfully!');
+  return {
+    users: createdUsers,
+    resources: createdResources
+  };
 } 

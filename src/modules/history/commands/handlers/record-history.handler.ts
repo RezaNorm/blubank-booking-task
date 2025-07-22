@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EntityHistory } from '../entity/entity-history.entity';
-import { RecordHistoryCommand } from './record-history.command';
+import { EntityHistory } from '../../entity/entity-history.entity';
+import { RecordHistoryCommand } from '../impl/record-history.command';
 
 @CommandHandler(RecordHistoryCommand)
 export class RecordHistoryHandler implements ICommandHandler<RecordHistoryCommand> {

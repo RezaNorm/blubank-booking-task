@@ -4,17 +4,21 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Booking } from './entity/booking.entity';
 import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
+import { IBookingRepository, BOOKING_REPOSITORY } from './repositories/booking.repository.interface';
+import { BookingRepository } from './repositories/booking.repository';
 import { UserModule } from '../user/user.module';
 import { ResourceModule } from '../resource/resource.module';
-
 import { HistoryModule } from '../history/history.module';
-import { CreateBookingHandler } from './commands/create-booking.handler';
-import { ConfirmBookingHandler } from './commands/confirm-booking.handler';
-import { CancelBookingHandler } from './commands/cancel-booking.handler';
-import { GetBookingByIdHandler } from './queries/get-booking-by-id.handler';
-import { GetBookingsByUserHandler } from './queries/get-bookings-by-user.handler';
-import { GetBookingsByResourceHandler } from './queries/get-bookings-by-resource.handler';
-import { GetAllBookingsHandler } from './queries/get-all-bookings.handler';
+import { User } from '../user/entity/user.entity';
+import { Resource } from '../resource/entity/resource.entity';
+import { CreateBookingHandler } from './commands/handlers/create-booking.handler';
+import { ConfirmBookingHandler } from './commands/handlers/confirm-booking.handler';
+import { CancelBookingHandler } from './commands/handlers/cancel-booking.handler';
+import { GetBookingByIdHandler } from './queries/handlers/get-booking-by-id.handler';
+import { GetBookingsByUserHandler } from './queries/handlers/get-bookings-by-user.handler';
+import { GetBookingsByResourceHandler } from './queries/handlers/get-bookings-by-resource.handler';
+import { GetAllBookingsHandler } from './queries/handlers/get-all-bookings.handler';
+import { GetConfirmedBookingsHandler } from './queries/handlers/get-confirmed-bookings.handler';
 
 const CommandHandlers = [CreateBookingHandler, ConfirmBookingHandler, CancelBookingHandler];
 const QueryHandlers = [
@@ -22,22 +26,27 @@ const QueryHandlers = [
   GetBookingsByUserHandler,
   GetBookingsByResourceHandler,
   GetAllBookingsHandler,
+  GetConfirmedBookingsHandler,
 ];
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking]),
+    TypeOrmModule.forFeature([Booking, User, Resource]),
+    CqrsModule,
     forwardRef(() => UserModule),
     forwardRef(() => ResourceModule),
-    CqrsModule,
-    HistoryModule,
+    forwardRef(() => HistoryModule),
   ],
+  controllers: [BookingController],
   providers: [
     BookingService,
+    {
+      provide: BOOKING_REPOSITORY,
+      useClass: BookingRepository,
+    },
     ...CommandHandlers,
     ...QueryHandlers,
   ],
-  controllers: [BookingController],
-  exports: [TypeOrmModule, BookingService],
+  exports: [BookingService, BOOKING_REPOSITORY],
 })
-export class BookingModule {} 
+export class BookingModule {}

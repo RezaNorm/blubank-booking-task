@@ -34,12 +34,6 @@ describe('ResourceService', () => {
     service = module.get<ResourceService>(ResourceService);
   });
 
-  it('should return null if resource not found', async () => {
-    resourceRepo.findOne.mockResolvedValue(null);
-    const result = await service.findOne(1);
-    expect(result).toBeNull();
-  });
-
   it('should return available resources for a time slot', async () => {
     const mockResources = [{ id: 2, name: 'Meeting Room' }];
     queryBus.execute.mockResolvedValue(mockResources);
@@ -56,25 +50,5 @@ describe('ResourceService', () => {
       })
     );
     expect(result).toEqual(mockResources);
-  });
-
-  it('should return reserved dates for a resource', async () => {
-    const mockReservedDates = [
-      { 
-        start: new Date('2024-07-01T14:00:00.000Z'), 
-        end: new Date('2024-07-01T16:00:00.000Z') 
-      }
-    ];
-    queryBus.execute.mockResolvedValue(mockReservedDates);
-    
-    const resourceId = 1;
-    const result = await service.getReservedDates(resourceId);
-    
-    expect(queryBus.execute).toHaveBeenCalledWith(
-      expect.objectContaining({
-        resourceId
-      })
-    );
-    expect(result).toEqual(mockReservedDates);
   });
 }); 

@@ -3,9 +3,11 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntityHistory } from './entity/entity-history.entity';
 import { HistoryService } from './history.service';
+import { HistoryRepository } from './repositories/history.repository';
+import { IHistoryRepository, HISTORY_REPOSITORY } from './repositories/history.repository.interface';
 
 // Command Handlers
-import { RecordHistoryHandler } from './commands/record-history.handler';
+import { RecordHistoryHandler } from './commands/handlers/record-history.handler';
 
 // Query Handlers
 import { GetEntityHistoryHandler } from './queries/get-entity-history.handler';
@@ -20,9 +22,13 @@ const QueryHandlers = [GetEntityHistoryHandler];
   ],
   providers: [
     HistoryService,
+    {
+      provide: HISTORY_REPOSITORY,
+      useClass: HistoryRepository,
+    },
     ...CommandHandlers,
     ...QueryHandlers,
   ],
-  exports: [TypeOrmModule, HistoryService],
+  exports: [HistoryService, HISTORY_REPOSITORY],
 })
 export class HistoryModule {} 

@@ -16,13 +16,4 @@ export class ResourceController {
   findAvailable(@Query('startTime') startTime: string, @Query('endTime') endTime: string) {
     return this.resourceService.findAvailable(new Date(startTime), new Date(endTime));
   }
-
-  @Get(':id/reserved-dates')
-  @ApiOperation({ summary: 'Get reserved dates for a specific room' })
-  @ApiParam({ name: 'id', description: 'Room ID' })
-  @ApiResponse({ status: 200, description: 'Reserved dates retrieved successfully' })
-  @ApiResponse({ status: 404, description: 'Room not found' })
-  getReservedDates(@Param('id') id: number) {
-    return this.resourceService.getReservedDates(id);
-  }
 } 

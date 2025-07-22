@@ -4,18 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-
-// Command Handlers
-import { CreateUserHandler } from './commands/create-user.handler';
+import { UserRepository } from './repositories/user.repository';
+import { IUserRepository, USER_REPOSITORY } from './repositories/user.repository.interface';
 
 // Query Handlers
-import { GetAllUsersHandler } from './queries/get-all-users.handler';
-import { GetUserByIdHandler } from './queries/get-user-by-id.handler';
+import { ListUsersHandler } from './queries/handlers/list-users.handler';
 
-const CommandHandlers = [CreateUserHandler];
 const QueryHandlers = [
-  GetAllUsersHandler,
-  GetUserByIdHandler,
+  ListUsersHandler,
 ];
 
 @Module({
@@ -25,10 +21,20 @@ const QueryHandlers = [
   ],
   providers: [
     UserService,
-    ...CommandHandlers,
+    {
+      provide: USER_REPOSITORY,
+      useClass: UserRepository,
+    },
     ...QueryHandlers,
   ],
   controllers: [UserController],
-  exports: [UserService],
+  exports: [
+    UserService,
+    {
+      provide: USER_REPOSITORY,
+      useClass: UserRepository,
+    },
+    USER_REPOSITORY,
+  ],
 })
-export class UserModule {} 
+export class UserModule {}

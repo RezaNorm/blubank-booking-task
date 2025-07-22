@@ -5,32 +5,39 @@ import { Resource } from './entity/resource.entity';
 import { ResourceService } from './resource.service';
 import { ResourceController } from './resource.controller';
 import { BookingModule } from '../booking/booking.module';
-
-// Command Handlers
-import { CreateResourceHandler } from './commands/create-resource.handler';
+import { ResourceRepository } from './repositories/resource.repository';
+import { IResourceRepository, RESOURCE_REPOSITORY } from './repositories/resource.repository.interface';
+import { Booking } from '../booking/entity/booking.entity';
 
 // Query Handlers
-import { FindAvailableResourcesHandler } from './queries/find-available-resources.handler';
-import { GetReservedDatesHandler } from './queries/get-reserved-dates.handler';
+import { FindAvailableResourcesHandler } from './queries/handlers/find-available-resources.handler';
 
-const CommandHandlers = [CreateResourceHandler];
 const QueryHandlers = [
-  FindAvailableResourcesHandler,
-  GetReservedDatesHandler,
+  FindAvailableResourcesHandler
 ];
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Resource]), 
+    TypeOrmModule.forFeature([Resource, Booking]),
     forwardRef(() => BookingModule)
   ],
   providers: [
     ResourceService,
-    ...CommandHandlers,
+    {
+      provide: RESOURCE_REPOSITORY,
+      useClass: ResourceRepository,
+    },
     ...QueryHandlers,
   ],
   controllers: [ResourceController],
-  exports: [ResourceService],
+  exports: [
+    ResourceService,
+    {
+      provide: RESOURCE_REPOSITORY,
+      useClass: ResourceRepository,
+    },
+    RESOURCE_REPOSITORY,
+  ],
 })
 export class ResourceModule {} 

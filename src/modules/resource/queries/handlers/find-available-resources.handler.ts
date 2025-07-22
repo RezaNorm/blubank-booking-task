@@ -1,9 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Resource } from '../entity/resource.entity';
-import { FindAvailableResourcesQuery } from './find-available-resources.query';
-import { BookingService } from '../../booking/booking.service';
+import { Resource } from '../../entity/resource.entity';
+import { FindAvailableResourcesQuery } from '../impl/find-available-resources.query';
+import { BookingService } from '../../../booking/booking.service';
 
 @QueryHandler(FindAvailableResourcesQuery)
 export class FindAvailableResourcesHandler implements IQueryHandler<FindAvailableResourcesQuery> {
@@ -17,7 +17,7 @@ export class FindAvailableResourcesHandler implements IQueryHandler<FindAvailabl
     const { startTime, endTime } = query;
     
     const resources = await this.resourceRepository.find();
-    const bookings = await this.bookingService.findAllConfirmed();
+    const bookings = await this.bookingService.getConfirmedBookings();
     
     return resources.filter(resource => {
       const resourceBookings = bookings.filter(b => b.resource.id === resource.id);

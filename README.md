@@ -62,12 +62,23 @@ docker-compose run --rm app npm test
 
 - **CQRS (Command Query Responsibility Segregation):**
   - All write (create, confirm, cancel) and read (get, list) operations are separated into commands and queries using the official `@nestjs/cqrs` module.
+  - Commands handle state changes and mutations, while queries handle data retrieval.
+  - Uses CommandBus and QueryBus for dispatching commands and queries.
+
+- **Repository Pattern:**
+  - Abstract data access layer that mediates between the domain and data mapping layers.
+  - Each entity (User, Booking, Resource) has its own repository interface and implementation.
+  - Provides a collection-like interface for accessing domain objects.
+  - Centralizes data access logic and makes it easier to swap implementations.
+
+- **Dependency Injection:**
+  - Heavily utilized throughout the application for loose coupling and testability.
+  - Services, repositories, and other providers are injected through constructors.
+
 - **Service Layer:**
   - Application logic is encapsulated in NestJS services, which orchestrate domain logic and repositories.
-- **Dependency Inversion Principle (DIP):**
-  - Services depend on interfaces/abstractions, not concrete implementations (e.g., booking policy).
-- **History/Audit Pattern:**
-  - All entity changes are recorded in a generic `EntityHistory` table for audit and traceability.
+  - Services act as transaction boundaries and coordinate between different domain objects.
+  - Implements business rules and validations.
 
 ---
 
