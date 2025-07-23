@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindManyOptions, FindOneOptions, Between } from 'typeorm';
+import { Repository, FindOneOptions, Between } from 'typeorm';
 import { EntityHistory } from '../entity/entity-history.entity';
-import { IHistoryRepository, HISTORY_REPOSITORY } from './history.repository.interface';
+import { IHistoryRepository } from './history.repository.interface';
 import { BaseRepository } from '../../../database/base.repository';
 
 @Injectable()

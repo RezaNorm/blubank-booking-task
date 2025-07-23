@@ -1,6 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetReservedDatesQuery } from '../impl/get-reserved-dates.query';
-import { Inject } from '@nestjs/common';
 import { BookingService } from '../../../../modules/booking/booking.service';
 
 @QueryHandler(GetReservedDatesQuery)

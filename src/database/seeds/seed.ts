@@ -1,7 +1,6 @@
 import { DataSource } from 'typeorm';
 import { User } from '../../modules/user/entity/user.entity';
 import { Resource } from '../../modules/resource/entity/resource.entity';
-import { Booking } from '../../modules/booking/entity/booking.entity';
 
 export async function seed(datasource: DataSource) {
   console.log('Starting database reset...');

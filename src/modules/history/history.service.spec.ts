@@ -55,6 +55,8 @@ describe('HistoryService', () => {
   it('should get entity history', async () => {
     const entity = 'booking';
     const entityId = 1;
+    const action = 'created';
+
     const mockHistory = [
       { id: 1, entity, entityId, action: 'created', snapshot: { status: 'pending' } },
       { id: 2, entity, entityId, action: 'updated', snapshot: { status: 'confirmed' } }
@@ -62,12 +64,12 @@ describe('HistoryService', () => {
     
     queryBus.execute.mockResolvedValue(mockHistory);
 
-    const result = await service.getEntityHistory(entity, entityId);
+    const result = await service.getEntityHistory(entity, action);
     
     expect(queryBus.execute).toHaveBeenCalledWith(
       expect.objectContaining({
         entity,
-        entityId
+        action
       })
     );
     expect(result).toEqual(mockHistory);

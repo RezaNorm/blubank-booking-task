@@ -5,7 +5,7 @@ import { EntityHistory } from './entity/entity-history.entity';
 import { HistoryService } from './history.service';
 import { HistoryController } from './history.controller';
 import { HistoryRepository } from './repositories/history.repository';
-import { IHistoryRepository, HISTORY_REPOSITORY } from './repositories/history.repository.interface';
+import { HISTORY_REPOSITORY } from './repositories/history.repository.interface';
 
 // Command Handlers
 import { RecordHistoryHandler } from './commands/handlers/record-history.handler';

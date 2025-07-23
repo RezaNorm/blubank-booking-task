@@ -13,7 +13,6 @@ import { CancelBookingCommand } from './commands/impl/cancel-booking.command';
 // Queries
 import { GetBookingByIdQuery } from './queries/impl/get-booking-by-id.query';
 import { GetBookingsByUserQuery } from './queries/impl/get-bookings-by-user.query';
-import { GetBookingsByResourceQuery } from './queries/impl/get-bookings-by-resource.query';
 import { GetAllBookingsQuery } from './queries/impl/get-all-bookings.query';
 
 describe('BookingService', () => {
