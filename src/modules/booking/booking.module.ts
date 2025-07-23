@@ -33,9 +33,9 @@ const QueryHandlers = [
   imports: [
     TypeOrmModule.forFeature([Booking, User, Resource]),
     CqrsModule,
-    forwardRef(() => UserModule),
+    UserModule,
+    HistoryModule,
     forwardRef(() => ResourceModule),
-    forwardRef(() => HistoryModule),
   ],
   controllers: [BookingController],
   providers: [
