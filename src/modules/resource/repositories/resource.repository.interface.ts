@@ -7,7 +7,6 @@ export interface IResourceRepository {
   // Base repository methods
   findById(id: number): Promise<Resource | null>;
   findAll(options?: FindManyOptions<Resource>): Promise<Resource[]>;
-  findAll(): Promise<Resource[]>;
   
   // Additional methods
   findOne(options: FindOneOptions<Resource>): Promise<Resource | null>;

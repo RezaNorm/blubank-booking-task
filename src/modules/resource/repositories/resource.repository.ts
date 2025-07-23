@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Resource } from '../entity/resource.entity';
 import { IResourceRepository } from './resource.repository.interface';
 import { BaseRepository } from '../../../database/base.repository';
@@ -7,4 +9,11 @@ import { BaseRepository } from '../../../database/base.repository';
 export class ResourceRepository
   extends BaseRepository<Resource>
   implements IResourceRepository
-{}
+{
+  constructor(
+    @InjectRepository(Resource)
+    repository: Repository<Resource>,
+  ) {
+    super(repository);
+  }
+}
