@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import {  Between } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Between, Repository } from 'typeorm';
 import { EntityHistory } from '../entity/entity-history.entity';
 import { IHistoryRepository } from './history.repository.interface';
 import { BaseRepository } from '../../../database/base.repository';
@@ -9,6 +10,13 @@ export class HistoryRepository
   extends BaseRepository<EntityHistory>
   implements IHistoryRepository
 {
+  constructor(
+    @InjectRepository(EntityHistory)
+    private readonly historyRepository: Repository<EntityHistory>,
+  ) {
+    super(historyRepository);
+  }
+
   async findByEntity(entity: string, entityId: number): Promise<EntityHistory[]> {
     return this.findAll({
       where: { entity, entityId },

@@ -12,8 +12,8 @@ export class ResourceRepository
 {
   constructor(
     @InjectRepository(Resource)
-    repository: Repository<Resource>,
+    private readonly resourceRepository: Repository<Resource>,
   ) {
-    super(repository);
+    super(resourceRepository);
   }
 }
