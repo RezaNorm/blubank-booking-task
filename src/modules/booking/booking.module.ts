@@ -11,6 +11,8 @@ import { ResourceModule } from '../resource/resource.module';
 import { HistoryModule } from '../history/history.module';
 import { User } from '../user/entity/user.entity';
 import { Resource } from '../resource/entity/resource.entity';
+import { UserService } from '../user/user.service';
+import { ResourceService } from '../resource/resource.service';
 import { CreateBookingHandler } from './commands/handlers/create-booking.handler';
 import { ConfirmBookingHandler } from './commands/handlers/confirm-booking.handler';
 import { CancelBookingHandler } from './commands/handlers/cancel-booking.handler';
@@ -19,6 +21,7 @@ import { GetBookingsByUserHandler } from './queries/handlers/get-bookings-by-use
 import { GetBookingsByResourceHandler } from './queries/handlers/get-bookings-by-resource.handler';
 import { GetAllBookingsHandler } from './queries/handlers/get-all-bookings.handler';
 import { GetConfirmedBookingsHandler } from './queries/handlers/get-confirmed-bookings.handler';
+import { GetBookingsInTimeRangeHandler } from './queries/handlers/get-bookings-in-time-range.handler';
 
 const CommandHandlers = [CreateBookingHandler, ConfirmBookingHandler, CancelBookingHandler];
 const QueryHandlers = [
@@ -27,15 +30,16 @@ const QueryHandlers = [
   GetBookingsByResourceHandler,
   GetAllBookingsHandler,
   GetConfirmedBookingsHandler,
+  GetBookingsInTimeRangeHandler,
 ];
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking, User, Resource]),
+    TypeOrmModule.forFeature([Booking]),
     CqrsModule,
     forwardRef(() => UserModule),
     forwardRef(() => ResourceModule),
-    forwardRef(() => HistoryModule),
+    HistoryModule,
   ],
   controllers: [BookingController],
   providers: [
@@ -46,7 +50,9 @@ const QueryHandlers = [
     },
     ...CommandHandlers,
     ...QueryHandlers,
+    UserService,
+    ResourceService,
   ],
-  exports: [BookingService, BOOKING_REPOSITORY],
+  exports: [BookingService],
 })
 export class BookingModule {}

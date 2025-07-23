@@ -43,20 +43,22 @@ export class BookingRepository
     endTime: Date,
     resourceId?: number,
   ): Promise<Booking[]> {
-    const where: any = {
-      startTime: Between(startTime, endTime),
-      endTime: Between(startTime, endTime),
-      status: 'confirmed',
-    };
+    // Create query builder
+    const qb = this.bookingRepository
+      .createQueryBuilder('booking')
+      .leftJoinAndSelect('booking.resource', 'resource')
+      .where('booking.status = :status', { status: 'confirmed' });
 
+    // Add time range conditions
+    qb.andWhere('booking.startTime < :endTime', { endTime })
+      .andWhere('booking.endTime > :startTime', { startTime });
+
+    // Add resource filter if provided
     if (resourceId) {
-      where.resource = { id: resourceId };
+      qb.andWhere('booking.resourceId = :resourceId', { resourceId });
     }
 
-    return this.find({
-      where,
-      relations: ['resource'],
-    });
+    return qb.getMany();
   }
 
   async findOneWithRelations(

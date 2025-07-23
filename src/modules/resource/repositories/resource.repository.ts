@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { Resource } from '../entity/resource.entity';
 import { IResourceRepository, RESOURCE_REPOSITORY } from './resource.repository.interface';
 import { BaseRepository } from '../../../database/base.repository';
-import { Booking } from '../../booking/entity/booking.entity';
-import { BookingStatus } from "../../booking/entity/booking.entity"
 
 @Injectable()
 export class ResourceRepository
@@ -15,8 +13,6 @@ export class ResourceRepository
   constructor(
     @InjectRepository(Resource)
     private readonly resourceRepository: Repository<Resource>,
-    @InjectRepository(Booking)
-    private readonly bookingRepository: Repository<Booking>,
   ) {
     super(resourceRepository);
   }
@@ -27,54 +23,6 @@ export class ResourceRepository
 
   async findByName(name: string): Promise<Resource | null> {
     return this.findOne({ where: { name } });
-  }
-
-  async findAvailableResources(startTime: Date, endTime: Date): Promise<Resource[]> {
-    const allResources = await this.findAll();
-    
-    // Find resources that have bookings in the given time range
-    const bookedResources = await this.bookingRepository
-      .createQueryBuilder('booking')
-      .innerJoinAndSelect('booking.resource', 'resource')
-      .where('booking.startTime < :endTime AND booking.endTime > :startTime', {
-        startTime,
-        endTime,
-      })
-      .andWhere('booking.status = :status', { status: BookingStatus.CONFIRMED })
-      .select('resource.id')
-      .getMany();
-
-    // Get IDs of booked resources
-    const bookedResourceIds = new Set(bookedResources.map(br => br.resource.id));
-
-    // Filter out the booked resources
-    return allResources.filter(resource => !bookedResourceIds.has(resource.id));
-  }
-
-  async getReservedDates(resourceId: number, startDate: Date, endDate: Date): Promise<Date[]> {
-    const bookings = await this.bookingRepository.find({
-      where: {
-        resource: { id: resourceId },
-        status: BookingStatus.CONFIRMED,
-        startTime: Between(startDate, endDate),
-      },
-      select: ['startTime', 'endTime'],
-    });
-
-    // Extract all dates from the bookings
-    const reservedDates: Date[] = [];
-    
-    bookings.forEach(booking => {
-      const currentDate = new Date(booking.startTime);
-      const endDate = new Date(booking.endTime);
-      
-      while (currentDate <= endDate) {
-        reservedDates.push(new Date(currentDate));
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-    });
-
-    return reservedDates;
   }
 
   async findOne(options: FindOneOptions<Resource>): Promise<Resource | null> {

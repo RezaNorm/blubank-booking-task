@@ -12,8 +12,6 @@ export interface IResourceRepository {
   
   // Custom resource repository methods
   findByName(name: string): Promise<Resource | null>;
-  findAvailableResources(startTime: Date, endTime: Date): Promise<Resource[]>;
-  getReservedDates(resourceId: number, startDate: Date, endDate: Date): Promise<Date[]>;
   
   // Additional methods
   findOne(options: FindOneOptions<Resource>): Promise<Resource | null>;

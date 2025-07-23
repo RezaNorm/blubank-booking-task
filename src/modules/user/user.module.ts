@@ -9,9 +9,11 @@ import { IUserRepository, USER_REPOSITORY } from './repositories/user.repository
 
 // Query Handlers
 import { ListUsersHandler } from './queries/handlers/list-users.handler';
+import { GetUserByIdHandler } from './queries/handlers/get-user-by-id.handler';
 
 const QueryHandlers = [
   ListUsersHandler,
+  GetUserByIdHandler,
 ];
 
 @Module({
@@ -29,12 +31,7 @@ const QueryHandlers = [
   ],
   controllers: [UserController],
   exports: [
-    UserService,
-    {
-      provide: USER_REPOSITORY,
-      useClass: UserRepository,
-    },
-    USER_REPOSITORY,
+    UserService
   ],
 })
 export class UserModule {}

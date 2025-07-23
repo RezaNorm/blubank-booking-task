@@ -1,33 +1,45 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Resource } from '../../entity/resource.entity';
 import { FindAvailableResourcesQuery } from '../impl/find-available-resources.query';
-import { BookingService } from '../../../booking/booking.service';
+import { Resource } from '../../entity/resource.entity';
+import { IResourceRepository, RESOURCE_REPOSITORY } from '../../repositories/resource.repository.interface';
+import { Inject } from '@nestjs/common';
+import { BookingService } from '../../../../modules/booking/booking.service';
 
 @QueryHandler(FindAvailableResourcesQuery)
 export class FindAvailableResourcesHandler implements IQueryHandler<FindAvailableResourcesQuery> {
   constructor(
-    @InjectRepository(Resource)
-    private resourceRepository: Repository<Resource>,
-    private bookingService: BookingService,
+    @Inject(RESOURCE_REPOSITORY)
+    private readonly resourceRepository: IResourceRepository,
+    private readonly bookingService: BookingService,
   ) {}
 
   async execute(query: FindAvailableResourcesQuery): Promise<Resource[]> {
     const { startTime, endTime } = query;
     
+    // Get all resources
     const resources = await this.resourceRepository.find();
-    const bookings = await this.bookingService.getConfirmedBookings();
+    const availableResources: Resource[] = [];
     
-    return resources.filter(resource => {
-      const resourceBookings = bookings.filter(b => b.resource.id === resource.id);
-      const hasOverlap = resourceBookings.some(booking =>
-        this.bookingService.isBookingOverlap(
-          { start: new Date(booking.startTime), end: new Date(booking.endTime) },
-          { start: startTime, end: endTime }
-        )
+    // Check each resource for availability in the requested time range
+    for (const resource of resources) {
+      // Get all bookings for this resource that overlap with the requested time range
+      const overlappingBookings = await this.bookingService.getBookingsInTimeRange(
+        startTime,
+        endTime,
+        resource.id
       );
-      return !hasOverlap;
-    });
+      
+      // Filter for only confirmed bookings
+      const confirmedOverlappingBookings = overlappingBookings.filter(
+        booking => booking.status === 'confirmed'
+      );
+      
+      // If no confirmed bookings overlap, the resource is available
+      if (confirmedOverlappingBookings.length === 0) {
+        availableResources.push(resource);
+      }
+    }
+    
+    return availableResources;
   }
 }

@@ -8,31 +8,6 @@ export async function seed(datasource: DataSource) {
   
   const userRepository = datasource.getRepository(User);
   const resourceRepository = datasource.getRepository(Resource);
-  const bookingRepository = datasource.getRepository(Booking);
-  
-  // Disable foreign key checks
-  await datasource.query('SET session_replication_role = \'replica\'');
-  
-  try {
-    console.log('Clearing existing data...');
-    await bookingRepository.deleteAll();
-    console.log('Bookings cleared');
-    
-    await resourceRepository.deleteAll();
-    console.log('Resources cleared');
-    
-    await userRepository.deleteAll();
-    console.log('Users cleared');
-    
-    // Re-enable foreign key checks
-    await datasource.query('SET session_replication_role = \'origin\'');
-    
-    console.log('Database reset completed successfully');
-  } catch (error) {
-    await datasource.query('SET session_replication_role = \'origin\'');
-    console.error('Error resetting database:', error);
-    throw error;
-  }
 
   const users = [
     {

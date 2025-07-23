@@ -20,7 +20,7 @@ export class CreateBookingDto {
 
   @ApiProperty({
     description: 'Booking start time (ISO format)',
-    example: '2025-07-22T14:00:00.000Z',
+    example: '2025-08-22T14:00:00.000Z',
   })
   @IsDateString()
   @IsNotEmpty()
@@ -28,7 +28,7 @@ export class CreateBookingDto {
 
   @ApiProperty({
     description: 'Booking end time (ISO format)',
-    example: '2025-07-24T16:00:00.000Z',
+    example: '2025-08-24T16:00:00.000Z',
   })
   @IsDateString()
   @IsNotEmpty()

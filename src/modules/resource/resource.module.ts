@@ -7,19 +7,22 @@ import { ResourceController } from './resource.controller';
 import { BookingModule } from '../booking/booking.module';
 import { ResourceRepository } from './repositories/resource.repository';
 import { IResourceRepository, RESOURCE_REPOSITORY } from './repositories/resource.repository.interface';
-import { Booking } from '../booking/entity/booking.entity';
 
 // Query Handlers
 import { FindAvailableResourcesHandler } from './queries/handlers/find-available-resources.handler';
+import { GetReservedDatesHandler } from './queries/handlers/get-reserved-dates.handler';
+import { GetResourceByIdHandler } from './queries/handlers/get-resource-by-id.handler';
 
 const QueryHandlers = [
-  FindAvailableResourcesHandler
+  FindAvailableResourcesHandler,
+  GetReservedDatesHandler,
+  GetResourceByIdHandler
 ];
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Resource, Booking]),
+    TypeOrmModule.forFeature([Resource]),
     forwardRef(() => BookingModule)
   ],
   providers: [
@@ -32,12 +35,7 @@ const QueryHandlers = [
   ],
   controllers: [ResourceController],
   exports: [
-    ResourceService,
-    {
-      provide: RESOURCE_REPOSITORY,
-      useClass: ResourceRepository,
-    },
-    RESOURCE_REPOSITORY,
+    ResourceService
   ],
 })
 export class ResourceModule {} 

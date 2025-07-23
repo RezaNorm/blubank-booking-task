@@ -15,6 +15,7 @@ import { GetBookingsByUserQuery } from './queries/impl/get-bookings-by-user.quer
 import { GetBookingsByResourceQuery } from './queries/impl/get-bookings-by-resource.query';
 import { GetAllBookingsQuery } from './queries/impl/get-all-bookings.query';
 import { GetConfirmedBookingsQuery } from './queries/impl/get-confirmed-bookings.query';
+import { GetBookingsInTimeRangeQuery } from './queries/impl/get-bookings-in-time-range.query';
 
 @Injectable()
 export class BookingService {
@@ -94,5 +95,22 @@ export class BookingService {
    */
   async getConfirmedBookings(): Promise<Booking[]> {
     return this.queryBus.execute(new GetConfirmedBookingsQuery());
+  }
+
+  /**
+   * Gets all bookings within a specific time range, optionally filtered by resource
+   * @param startTime Start of the time range
+   * @param endTime End of the time range
+   * @param resourceId Optional resource ID to filter by
+   * @returns Array of bookings within the time range
+   */
+  async getBookingsInTimeRange(
+    startTime: Date,
+    endTime: Date,
+    resourceId?: number
+  ): Promise<Booking[]> {
+    return this.queryBus.execute(
+      new GetBookingsInTimeRangeQuery(startTime, endTime, resourceId)
+    );
   }
 } 
