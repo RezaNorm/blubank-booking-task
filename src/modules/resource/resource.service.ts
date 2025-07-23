@@ -15,12 +15,6 @@ export class ResourceService {
   ) {}
 
   /**
-   * Find available resources within a time range
-   * @param startTime Start time
-   * @param endTime End time
-   * @returns Promise with array of available resources
-   */
-  /**
    * Find available resources within a time range using CQRS query
    * @param startTime Start time
    * @param endTime End time
