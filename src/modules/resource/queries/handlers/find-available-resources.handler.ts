@@ -17,7 +17,7 @@ export class FindAvailableResourcesHandler implements IQueryHandler<FindAvailabl
     const { startTime, endTime } = query;
     
     // Get all resources
-    const resources = await this.resourceRepository.find();
+    const resources = await this.resourceRepository.findAll();
     const availableResources: Resource[] = [];
     
     // Check each resource for availability in the requested time range

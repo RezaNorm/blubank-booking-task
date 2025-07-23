@@ -6,8 +6,7 @@ export const HISTORY_REPOSITORY = 'HISTORY_REPOSITORY';
 export interface IHistoryRepository {
   // Base repository methods
   save(entity: Partial<EntityHistory>): Promise<EntityHistory>;
-  findById(id: number): Promise<EntityHistory | null>;
-  find(options?: FindManyOptions<EntityHistory>): Promise<EntityHistory[]>;
+  findAll(options?: FindManyOptions<EntityHistory>): Promise<EntityHistory[]>;
   
   // Custom history repository methods
   findByEntity(entity: string, entityId: number): Promise<EntityHistory[]>;
@@ -16,6 +15,4 @@ export interface IHistoryRepository {
   
   // Additional methods
   findOne(options: FindOneOptions<EntityHistory>): Promise<EntityHistory | null>;
-  update(id: number, entity: Partial<EntityHistory>): Promise<EntityHistory | null>;
-  delete(id: number): Promise<boolean>;
 }

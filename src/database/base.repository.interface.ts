@@ -6,7 +6,7 @@ export interface IBaseRepository<T> {
   save(entity: T): Promise<T>;
   saveMany(entities: T[]): Promise<T[]>;
   findOne(options: FindOneOptions<T>): Promise<T | null>;
-  find(options?: FindManyOptions<T>): Promise<T[]>;
+  findAll(options?: FindManyOptions<T>): Promise<T[]>;
   findById(id: any): Promise<T | null>;
   update(id: any, entity: Partial<T>): Promise<T | null>;
   delete(id: any): Promise<boolean>;

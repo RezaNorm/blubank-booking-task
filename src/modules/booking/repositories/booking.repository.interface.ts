@@ -7,7 +7,7 @@ export interface IBookingRepository {
   create(entityLike: DeepPartial<Booking>): Booking;
   save(entity: DeepPartial<Booking>): Promise<Booking>;
   findById(id: number): Promise<Booking | null>;
-  find(options?: FindManyOptions<Booking>): Promise<Booking[]>;
+  findAll(options?: FindManyOptions<Booking>): Promise<Booking[]>;
   
   findBookingsForResource(resourceId: number): Promise<Booking[]>;
   findBookingsByUser(userId: number): Promise<Booking[]>;

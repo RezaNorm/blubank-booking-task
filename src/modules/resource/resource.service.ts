@@ -5,7 +5,6 @@ import { IResourceRepository, RESOURCE_REPOSITORY } from './repositories/resourc
 
 // Queries
 import { FindAvailableResourcesQuery } from './queries/impl/find-available-resources.query';
-import { GetReservedDatesQuery } from './queries/impl/get-reserved-dates.query';
 import { GetResourceByIdQuery } from './queries/impl/get-resource-by-id.query';
 
 @Injectable()
@@ -23,19 +22,6 @@ export class ResourceService {
   async findAvailable(startTime: Date, endTime: Date): Promise<Resource[]> {
     return this.queryBus.execute(
       new FindAvailableResourcesQuery(startTime, endTime)
-    );
-  }
-
-  /**
-   * Get all reserved dates for a resource within a date range using CQRS query
-   * @param resourceId The ID of the resource
-   * @param startDate Start of the date range
-   * @param endDate End of the date range
-   * @returns Array of reserved dates
-   */
-  async getReservedDates(resourceId: number, startDate: Date, endDate: Date): Promise<Date[]> {
-    return this.queryBus.execute(
-      new GetReservedDatesQuery(resourceId, startDate, endDate)
     );
   }
 

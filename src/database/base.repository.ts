@@ -24,7 +24,7 @@ export abstract class BaseRepository<T extends ObjectLiteral> implements IBaseRe
     return this.repository.findOne(options);
   }
 
-  async find(options?: FindManyOptions<T>): Promise<T[]> {
+  async findAll(options?: FindManyOptions<T>): Promise<T[]> {
     return this.repository.find(options);
   }
 

@@ -19,11 +19,11 @@ export class BookingRepository
 
   create(entityLike: DeepPartial<Booking>): Booking {
     const booking = this.bookingRepository.create(entityLike);
-    return booking as Booking; // Explicit cast to Booking
+    return booking as Booking;
   }
 
   async findBookingsForResource(resourceId: number): Promise<Booking[]> {
-    return this.find({
+    return this.findAll({
       where: { resource: { id: resourceId }, status: BookingStatus.CONFIRMED },
       order: { startTime: 'ASC' },
       relations: ['resource'],
@@ -31,7 +31,7 @@ export class BookingRepository
   }
 
   async findBookingsByUser(userId: number): Promise<Booking[]> {
-    return this.find({
+    return this.findAll({
       where: { user: { id: userId } },
       order: { startTime: 'DESC' },
       relations: ['resource'],

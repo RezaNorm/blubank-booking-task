@@ -10,12 +10,10 @@ import { IResourceRepository, RESOURCE_REPOSITORY } from './repositories/resourc
 
 // Query Handlers
 import { FindAvailableResourcesHandler } from './queries/handlers/find-available-resources.handler';
-import { GetReservedDatesHandler } from './queries/handlers/get-reserved-dates.handler';
 import { GetResourceByIdHandler } from './queries/handlers/get-resource-by-id.handler';
 
 const QueryHandlers = [
   FindAvailableResourcesHandler,
-  GetReservedDatesHandler,
   GetResourceByIdHandler
 ];
 
