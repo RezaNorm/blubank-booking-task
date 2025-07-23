@@ -26,13 +26,13 @@ export class HistoryService {
   /**
    * Retrieves the history of actions for a specific entity
    * @param entity The entity type
-   * @param entityId The ID of the entity
+   * @param action The action performed (e.g., 'created', 'updated', 'deleted')
    * @param limit Optional limit on the number of history entries to return
    * @returns A promise that resolves to an array of EntityHistory objects
    */
-  async getEntityHistory(entity: string, entityId: number, limit?: number) {
+  async getEntityHistory(entity: string, action: string, limit?: number) {
     return this.queryBus.execute(
-      new GetEntityHistoryQuery(entity, entityId, limit)
+      new GetEntityHistoryQuery(entity, action, limit)
     );
   }
 } 

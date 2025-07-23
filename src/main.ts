@@ -16,6 +16,7 @@ async function bootstrap() {
     .addTag('bookings', 'Booking management endpoints')
     .addTag('users', 'User management endpoints')
     .addTag('resources', 'Resource (rooms) management endpoints')
+    .addTag('history', 'Audit history and change tracking endpoints')
     .build();
   
   const document = SwaggerModule.createDocument(app, config);

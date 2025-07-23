@@ -1,7 +1,6 @@
-import { Controller, Post, Get, Param, Body, Query, InternalServerErrorException } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { ResourceService } from './resource.service';
-import { CreateResourceDto } from './dto/create-resource.dto';
 
 @ApiTags('resources')
 @Controller('resources')

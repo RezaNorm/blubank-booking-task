@@ -8,15 +8,15 @@ export class HistoryController {
     constructor(private readonly historyService: HistoryService) {}
 
 
-    @Get()
+    @Get(':entity/:action')
     @ApiOperation({ summary: 'Get history of actions for a specific entity' })
-    @ApiParam({ name: 'entity', description: 'Entity type' })
-    @ApiParam({ name: 'entityId', description: 'Entity ID' })
+    @ApiParam({ name: 'entity', description: 'Entity name' })
+    @ApiParam({ name: 'action', description: 'Entity action (created, updated, deleted)' })
     @ApiQuery({ name: 'limit', description: 'Limit on the number of history entries to return' })
     @ApiResponse({ status: 200, description: 'History retrieved successfully' })
     @ApiResponse({ status: 404, description: 'Entity not found' })
-    getEntityHistory(@Param('entity') entity: string, @Param('entityId') entityId: number, @Query('limit') limit?: number) {
-        return this.historyService.getEntityHistory(entity, entityId, limit);
+    getEntityHistory(@Param('entity') entity: string, @Param('action') action: string, @Query('limit') limit?: number) {
+        return this.historyService.getEntityHistory(entity, action, limit);
     }
 }
     

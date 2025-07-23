@@ -12,13 +12,13 @@ export class GetEntityHistoryHandler implements IQueryHandler<GetEntityHistoryQu
   ) {}
 
   async execute(query: GetEntityHistoryQuery): Promise<EntityHistory[]> {
-    const { entity, entityId, limit } = query;
+    const { entity, action, limit } = query;
     
     const queryBuilder = this.historyRepository
       .createQueryBuilder('history')
       .where('history.entity = :entity', { entity })
-      .andWhere('history.entityId = :entityId', { entityId })
-      .orderBy('history.createdAt', 'DESC');
+      .andWhere('history.action = :action', { action })
+      .orderBy('history.timestamp', 'DESC');
     
     if (limit) {
       queryBuilder.take(limit);
