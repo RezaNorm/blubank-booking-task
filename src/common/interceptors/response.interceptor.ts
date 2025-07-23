@@ -12,10 +12,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<Response<T>> {
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
     const statusCode = response.statusCode;
-    const path = request.url;
-    const timestamp = new Date().toISOString();
 
     return next.handle().pipe(
       map((data) => ({
