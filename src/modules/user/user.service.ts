@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import { User } from './entity/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 
 // Queries
 import { ListUsersQuery } from './queries/impl/list-users.query';
